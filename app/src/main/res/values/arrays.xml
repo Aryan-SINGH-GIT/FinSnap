@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <resources>
+        <string-array name="bank_list">
+            <item>State Bank of India</item>
+            <item>HDFC Bank</item>
+            <item>ICICI Bank</item>
+            <item>Axis Bank</item>
+            <item>Punjab National Bank</item>
+            <item>Bank of Baroda</item>
+            <item>Kotak Mahindra Bank</item>
+            <item>IndusInd Bank</item>
+            <item>Yes Bank</item>
+            <item>Union Bank of India</item>
+        </string-array>
+    </resources>
+

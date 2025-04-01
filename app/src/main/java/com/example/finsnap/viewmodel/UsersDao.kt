@@ -7,6 +7,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.example.finsnap.model.UserBank
 
 
 @Dao
@@ -34,5 +35,8 @@ interface UsersDao {
 
     @Query("SELECT * FROM users")
     fun getAllStudents(): LiveData<List<UserData>>
+
+    @Insert
+    suspend fun insertUserBank(userBank: UserBank)
 
 }

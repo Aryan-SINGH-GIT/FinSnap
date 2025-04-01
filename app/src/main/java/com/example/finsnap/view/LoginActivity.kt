@@ -43,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
                         if (isValid) {
                             Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
                             // Navigate to the next screen after successful login
-                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                            startActivity(Intent(this@LoginActivity, BankDetails::class.java))
                         } else {
                             Toast.makeText(this@LoginActivity, "Invalid username or password", Toast.LENGTH_SHORT).show()
                         }
