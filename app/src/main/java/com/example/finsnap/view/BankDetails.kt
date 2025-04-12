@@ -1,5 +1,6 @@
 package com.example.finsnap.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
@@ -25,7 +26,7 @@ class BankDetails : AppCompatActivity() {
             applicationContext,
             UserDatabase::class.java,
             "finsnap_database"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
 
         val bankNames = resources.getStringArray(R.array.bank_list) // bank_list should be in strings.xml
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, bankNames)
@@ -43,6 +44,7 @@ class BankDetails : AppCompatActivity() {
                     currentAmount = currentAmount
                 )
                 database.UsersDao().insertUserBank(userBank)
+                startActivity(Intent(this@BankDetails, MainActivity::class.java))
             }
 
     }

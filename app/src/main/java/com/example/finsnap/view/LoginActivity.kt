@@ -26,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
             applicationContext,
             UserDatabase::class.java,
             "finsnap_database"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
 
 
         binding.loginSubmit.setOnClickListener {

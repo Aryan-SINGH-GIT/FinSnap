@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="75dp"
+    android:padding="10dp">
+<ImageView
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:id="@+id/amtImage"
+    android:src="@drawable/logo"
+    android:layout_margin="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SENDER/RECIVER"
+        android:textSize="20dp"
+        android:id="@+id/sender"
+        android:layout_margin="5dp"
+        android:layout_toRightOf="@+id/amtImage"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/time"
+        android:text="TIME"
+        android:textSize="15dp"
+        android:layout_marginStart="5dp"
+
+        android:layout_toRightOf="@+id/amtImage"
+        android:layout_below="@+id/sender"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:text="+50"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:id="@+id/amtChange"
+        android:textSize="20dp"/>
+
+
+
+</RelativeLayout>

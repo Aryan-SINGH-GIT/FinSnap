@@ -27,7 +27,7 @@ class SignUpActivity : AppCompatActivity() {
             applicationContext,
             UserDatabase::class.java,
             "finsnap_database"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
         binding.userSignUpSubmit.setOnClickListener {
             val userEmail = binding.userSignUpEmail.text.toString()
             val password = binding.userSignUpPassword.text.toString()
