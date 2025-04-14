@@ -3,14 +3,12 @@ package com.example.finsnap.view
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.room.Room
 import com.example.finsnap.R
-import com.example.finsnap.databinding.ActivityLoginBinding
 import com.example.finsnap.databinding.ActivityMainBinding
+import com.example.finsnap.viewmodel.UserDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {

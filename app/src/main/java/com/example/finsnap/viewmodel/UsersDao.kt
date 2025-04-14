@@ -6,8 +6,10 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.example.finsnap.model.UserBank
+//import com.example.finsnap.model.UserWithBank
 
 
 @Dao
@@ -32,11 +34,19 @@ interface UsersDao {
     @Query("SELECT EXISTS(SELECT 1 FROM users WHERE email = :useremail AND userpassword = :password)")
     suspend fun validateCredentials(useremail: String, password: String): Boolean
 
+    @Query("SELECT currentAmount FROM userBank WHERE bankid = :bankId")
+    suspend fun getCurrentAmount(bankId: Int): Double
+
 
     @Query("SELECT * FROM users")
     fun getAllStudents(): LiveData<List<UserData>>
 
     @Insert
     suspend fun insertUserBank(userBank: UserBank)
+
+//    @Transaction
+//    @Query("SELECT * FROM users WHERE id = :userId")
+//    fun getUserWithBank(userId: Int): LiveData<UserWithBank>
+
 
 }

@@ -56,4 +56,5 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.9")
     implementation("androidx.navigation:navigation-ui-ktx:2.8.9")
     implementation ("com.google.android.material:material:1.11.0")
+    implementation("androidx.biometric:biometric:1.2.0-alpha05")
 }

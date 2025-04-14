@@ -1,4 +1,4 @@
-package com.example.FinSnap.view
+package com.example.finsnap.view
 
 import android.view.LayoutInflater
 import android.view.View
