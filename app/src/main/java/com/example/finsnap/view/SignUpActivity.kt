@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.finsnap.databinding.ActivitySignUpBinding
 import com.example.finsnap.viewmodel.FinanceViewModel
 import com.example.finsnap.viewmodel.UserDatabase
@@ -21,7 +22,9 @@ class SignUpActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+//        Thread.sleep(10000)
+//        installSplashScreen()
+
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
         myfinanaceViewModel= ViewModelProvider(this).get(FinanceViewModel::class.java)

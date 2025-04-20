@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.finsnap.R
@@ -51,4 +52,19 @@ class AmoutAdapter(private val chatList: MutableList<UserAmount> = mutableListOf
 
 
     }
+    class SmsDiffCallback : DiffUtil.ItemCallback<UserAmount>() {
+        override fun areItemsTheSame(oldItem: UserAmount, newItem: UserAmount): Boolean {
+            // Since SMS doesn't have a unique ID, we can use a combination of fields
+            return oldItem.time == newItem.time && oldItem.sender == newItem.sender &&
+                    oldItem.amtChange == newItem.amtChange
+        }
+
+        override fun areContentsTheSame(oldItem: UserAmount, newItem: UserAmount): Boolean {
+            return oldItem == newItem
+        }
+    }
 }
+
+
+
+

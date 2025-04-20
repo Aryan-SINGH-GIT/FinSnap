@@ -1,6 +1,8 @@
 package com.example.finsnap.view
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -10,6 +12,7 @@ import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.room.Room
 import com.example.finsnap.databinding.ActivityLoginBinding
+import com.example.finsnap.viewmodel.SessionManager
 import com.example.finsnap.viewmodel.UserDatabase
 
 
@@ -21,11 +24,14 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var database: UserDatabase
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        SessionManager.init(this)
+
         binding=ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         database= Room.databaseBuilder(
             applicationContext,
@@ -43,10 +49,16 @@ class LoginActivity : AppCompatActivity() {
                 var isValid=false
                 GlobalScope.launch {
                     isValid = database.UsersDao().validateCredentials(email, password)
+                    if (isValid){
+                        var userId=database.UsersDao().getUserByEmail(email)
+                       SessionManager.saveUserToken(userId.toString())
+                    }
+
 
                     runOnUiThread {
 
                         if (isValid) {
+
                             Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
                             // Navigate to the next screen after successful login
                            // startActivity(Intent(this@LoginActivity, BankDetails::class.java))
@@ -90,7 +102,7 @@ class LoginActivity : AppCompatActivity() {
         val biometricPrompt= BiometricPrompt(this,executor, object : BiometricPrompt.AuthenticationCallback()  {
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                 super.onAuthenticationSucceeded(result)
-                Toast.makeText(applicationContext,"FingerPrint MATCHED!",Toast.LENGTH_LONG).show()
+//                Toast.makeText(applicationContext,"FingerPrint MATCHED!",Toast.LENGTH_LONG).show()
                 startActivity(Intent(applicationContext,BankDetails::class.java))
                 finish()
             }

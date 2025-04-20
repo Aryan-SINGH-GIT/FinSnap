@@ -9,6 +9,8 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.example.finsnap.model.UserBank
+import com.example.finsnap.model.UserWithBank
+
 //import com.example.finsnap.model.UserWithBank
 
 
@@ -34,19 +36,26 @@ interface UsersDao {
     @Query("SELECT EXISTS(SELECT 1 FROM users WHERE email = :useremail AND userpassword = :password)")
     suspend fun validateCredentials(useremail: String, password: String): Boolean
 
-    @Query("SELECT currentAmount FROM userBank WHERE bankid = :bankId")
-    suspend fun getCurrentAmount(bankId: Int): Double
+    @Query("SELECT currentAmount FROM userBank WHERE userId = :userId")
+    suspend fun getCurrentAmount(userId: Int): Double
+
+    @Query("SELECT bankName FROM userBank WHERE userId = :userId")
+    suspend fun getBankName(userId: Int): String
+
 
 
     @Query("SELECT * FROM users")
     fun getAllStudents(): LiveData<List<UserData>>
 
+    @Query("SELECT ID FROM users WHERE email = :email LIMIT 1")
+    suspend fun getUserByEmail(email: String):Number?
+
     @Insert
     suspend fun insertUserBank(userBank: UserBank)
 
-//    @Transaction
-//    @Query("SELECT * FROM users WHERE id = :userId")
-//    fun getUserWithBank(userId: Int): LiveData<UserWithBank>
+    @Transaction
+    @Query("SELECT * FROM users WHERE id = :userId")
+    fun getUserWithBank(userId: Int): LiveData<UserWithBank>
 
 
 }

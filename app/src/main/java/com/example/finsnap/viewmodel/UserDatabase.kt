@@ -6,7 +6,7 @@ import com.example.finsnap.model.UserBank
 import com.example.finsnap.model.UserData
 
 
-@Database(entities = [UserData::class, UserBank::class], version = 2)
+@Database(entities = [UserData::class, UserBank::class], version = 3)
 abstract class UserDatabase:RoomDatabase() {
     abstract fun UsersDao():UsersDao
 }

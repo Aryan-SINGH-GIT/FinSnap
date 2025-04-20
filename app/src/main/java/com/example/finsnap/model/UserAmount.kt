@@ -4,5 +4,6 @@ data class UserAmount(
     val sender: String,
     val time: String,
     val amtChange: String,
-    val amtImage: Int
+    val amtImage: Int,
+    val rawMessage: String
 )
