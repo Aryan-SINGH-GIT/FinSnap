@@ -55,14 +55,16 @@ class Amout_Repository(private val context: Context) {
                         val imageResource = R.drawable.logo
                         val amountFormatted = if (isCredit) "+₹$amount" else "-₹$amount"
                         val displaySender = if (sender.isNotEmpty()) sender else if (isCredit) "Unknown Sender" else "Unknown Recipient"
-
+                        val numericAmount = amount.replace(",", "").toDoubleOrNull() ?: 0.0
                         smsList.add(
                             UserAmount(
                                 sender = displaySender,
                                 time = formattedTime,
                                 amtChange = amountFormatted,
                                 amtImage = imageResource,
-                                rawMessage = messageBody
+                                rawMessage = messageBody,
+                                amount= numericAmount,  // Add the numeric amount
+                                isCredit = isCredit      // Add whether it's a credit or debit
                             )
                         )
                     }
@@ -88,6 +90,7 @@ class Amout_Repository(private val context: Context) {
         if (amountMatcher.find()) {
             amount = amountMatcher.group(1) ?: ""
         }
+
 
         // Determine if credited or debited
         val messageLower = message.lowercase()
@@ -167,6 +170,7 @@ class Amout_Repository(private val context: Context) {
                 recipient = sbiMatcher.group(1) ?: ""
             }
         }
+        val numericAmount = amount.replace(",", "").toDoubleOrNull() ?: 0.0
 
         return Triple(amount, isCredit, recipient)
     }

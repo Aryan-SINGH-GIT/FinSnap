@@ -46,9 +46,25 @@ class HomeFragment : Fragment() {
         var currentAmount = 0.0
         val userId = SessionManager.getUserToken().toString().toInt()
 
+// First set up the observer for the balance
+        myfinanaceViewModel.currentBalance.observe(viewLifecycleOwner) { balance ->
+            binding.textView.text = String.format("%.2f", balance)
+        }
+      
+
+// Then load the initial amount and trigger the calculation
         GlobalScope.launch {
-            currentAmount = database.UsersDao().getCurrentAmount(userId)
-            binding.textView.text = currentAmount.toString()
+            val initialAmount = database.UsersDao().getCurrentAmount(userId)
+            requireActivity().runOnUiThread {
+                // Only show initialAmount temporarily
+                binding.textView.text = String.format("%.2f", initialAmount)
+
+                // Calculate the updated balance based on transactions
+                myfinanaceViewModel.calculateCurrentBalance(initialAmount)
+            }
+        }
+        myfinanaceViewModel.currentBalance.observe(viewLifecycleOwner) { balance ->
+            binding.textView.text = String.format("%.2f", balance)
         }
 
         recyclerView = binding.myrecyclerview

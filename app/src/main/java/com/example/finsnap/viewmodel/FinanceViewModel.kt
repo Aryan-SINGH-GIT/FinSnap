@@ -28,6 +28,9 @@ class FinanceViewModel(application: Application): AndroidViewModel(application) 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
+    private val _currentBalance = MutableLiveData<Double>()
+    val currentBalance: LiveData<Double> = _currentBalance
+
     fun InsertBankDetail(bankName: String, currentAmount: Double): UserBank {
         val userId = SessionManager.getUserToken()
         return UserBank(
@@ -58,5 +61,30 @@ class FinanceViewModel(application: Application): AndroidViewModel(application) 
             email = email,
             userpassword = password
         )
+    }
+
+    fun calculateCurrentBalance(initialBalance: Double) {
+        viewModelScope.launch {
+            try {
+                val transactions = withContext(Dispatchers.IO) {
+                    repository.getBankSmsTransactions()
+                }
+
+                var updatedBalance = initialBalance
+
+                // Calculate the new balance based on transactions
+                transactions.forEach { transaction ->
+                    if (transaction.isCredit) {
+                        updatedBalance += transaction.amount
+                    } else {
+                        updatedBalance -= transaction.amount
+                    }
+                }
+
+                _currentBalance.value = updatedBalance
+            } catch (e: Exception) {
+                _error.value = "Failed to calculate balance: ${e.message}"
+            }
+        }
     }
 }

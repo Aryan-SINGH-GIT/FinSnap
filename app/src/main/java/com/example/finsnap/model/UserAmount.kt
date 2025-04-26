@@ -5,5 +5,7 @@ data class UserAmount(
     val time: String,
     val amtChange: String,
     val amtImage: Int,
-    val rawMessage: String
+    val rawMessage: String,
+    val amount: Double = 0.0,  // New field for numeric value
+    val isCredit: Boolean = false  // Whether this is a credit or debit
 )
