@@ -12,14 +12,27 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/cashFragment"
-        android:name="com.example.finsnap.view.CashTransactionFragment"
-        android:label="Cash Transaction"
-        tools:layout="@layout/fragment_cash_transaction" />
-
-    <fragment
         android:id="@+id/articleFragment"
         android:name="com.example.finsnap.view.ArticleFragment"
         android:label="Article"
         tools:layout="@layout/fragment_article" />
+    <fragment
+        android:id="@+id/cashFragment"
+        android:name="com.example.finsnap.view.CashTransactionFragment"
+        android:label="Cash Transactions"
+        tools:layout="@layout/fragment_cash_transaction">
+        <action
+            android:id="@+id/action_cashTransactionFragment_to_addCashFragment"
+            app:destination="@id/addCashFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addCashFragment"
+        android:name="com.example.finsnap.view.AddCashFragment"
+        android:label="Add Cash Transaction"
+        tools:layout="@layout/fragment_add_cash" >
+        <action
+            android:id="@+id/action_addCashFragment_to_cashTransactionFragment"
+            app:destination="@id/cashTransactionFragment" />
+    </fragment>
 </navigation>

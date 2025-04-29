@@ -14,6 +14,23 @@ import java.util.*
 import java.util.regex.Pattern
 
 class Amout_Repository(private val context: Context) {
+    private val database = Room.databaseBuilder(
+        context.applicationContext,
+        UserDatabase::class.java,
+        "user_database"
+    ).fallbackToDestructiveMigration().build()
+
+    private val usersDao = database.UsersDao()
+
+
+    suspend fun insertCashTransaction(userCash: UserCash) {
+        usersDao.insertUserCash(userCash)
+    }
+
+    // Get all cash transactions
+    suspend fun getCashTransactions(): List<UserCash> {
+        return usersDao.getAllCashTransactions()
+    }
 
     suspend fun getBankSmsTransactions(): List<UserAmount> {
         val smsList = mutableListOf<UserAmount>()
@@ -176,7 +193,7 @@ class Amout_Repository(private val context: Context) {
     }
 
 
-    private lateinit var database: UserDatabase
+
 
 
     private fun containsBankName(message: String): Boolean {

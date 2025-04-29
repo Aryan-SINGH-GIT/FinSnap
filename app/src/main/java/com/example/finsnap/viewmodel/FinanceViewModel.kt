@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.finsnap.model.Amout_Repository
 import com.example.finsnap.model.UserAmount
 import com.example.finsnap.model.UserBank
+import com.example.finsnap.model.UserCash
 import com.example.finsnap.model.UserData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,6 +31,9 @@ class FinanceViewModel(application: Application): AndroidViewModel(application) 
 
     private val _currentBalance = MutableLiveData<Double>()
     val currentBalance: LiveData<Double> = _currentBalance
+
+    private val _cashTransactions = MutableLiveData<List<UserCash>>()
+    val cashTransactions: LiveData<List<UserCash>> = _cashTransactions
 
     fun InsertBankDetail(bankName: String, currentAmount: Double): UserBank {
         val userId = SessionManager.getUserToken()
@@ -87,4 +91,33 @@ class FinanceViewModel(application: Application): AndroidViewModel(application) 
             }
         }
     }
+
+
+    fun insertCashTransaction(userCash: UserCash) {
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    repository.insertCashTransaction(userCash)
+                }
+                loadCashTransactions()
+            } catch (e: Exception) {
+                _error.value = "Failed to save transaction: ${e.message}"
+            }
+        }
+    }
+
+    // Load cash transactions
+    fun loadCashTransactions() {
+        viewModelScope.launch {
+            try {
+                val transactions = withContext(Dispatchers.IO) {
+                    repository.getCashTransactions()
+                }
+                _cashTransactions.value = transactions
+            } catch (e: Exception) {
+                _error.value = "Failed to load cash transactions: ${e.message}"
+            }
+        }
+    }
+
 }

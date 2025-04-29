@@ -9,6 +9,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.example.finsnap.model.UserBank
+import com.example.finsnap.model.UserCash
 import com.example.finsnap.model.UserWithBank
 
 //import com.example.finsnap.model.UserWithBank
@@ -56,6 +57,14 @@ interface UsersDao {
     @Transaction
     @Query("SELECT * FROM users WHERE id = :userId")
     fun getUserWithBank(userId: Int): LiveData<UserWithBank>
+
+
+    @Insert
+    suspend fun insertUserCash(userCash: UserCash)
+
+
+    @Query("SELECT * FROM userCash ORDER BY id DESC")
+    suspend fun getAllCashTransactions(): List<UserCash>
 
 
 }
