@@ -4,7 +4,7 @@
         android:icon="@drawable/ic_home"
         android:title="Home" />
     <item
-        android:id="@+id/cashFragment"
+        android:id="@+id/cashTransactionFragment"
         android:icon="@drawable/ic_cash"
         android:title="Cash Transaction" />
     <item

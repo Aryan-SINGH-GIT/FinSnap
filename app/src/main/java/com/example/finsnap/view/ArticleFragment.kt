@@ -1,60 +1,69 @@
 package com.example.finsnap.view
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.finsnap.R
+import com.example.finsnap.databinding.FragmentAddCashBinding
+import com.example.finsnap.databinding.FragmentArticleBinding
+import com.example.finsnap.model.RssResponse
+import com.example.finsnap.viewmodel.FinanceViewModel
+import com.example.finsnap.viewmodel.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ArticleFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ArticleFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: ArticleAdapter
+    private lateinit var binding: FragmentArticleBinding
 
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//
+//
+//
+//    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_article, container, false)
+        binding= FragmentArticleBinding.inflate(inflater, container, false)
+        recyclerView = binding.articleRecyclerView
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+
+        fetchArticles()
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ArticleFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ArticleFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun fetchArticles() {
+        val rssUrl ="https://medium.com/feed/financial-strategy"
+        RetrofitClient.api.getArticles(rssUrl).enqueue(object : Callback<RssResponse> {
+            override fun onResponse(call: Call<RssResponse>, response: Response<RssResponse>) {
+                if (response.isSuccessful) {
+                    val articles = response.body()?.items ?: emptyList()
+                    adapter = ArticleAdapter(articles) { article ->
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(article.link))
+                        startActivity(intent)
+                    }
+                    recyclerView.adapter = adapter
                 }
             }
+
+            override fun onFailure(call: Call<RssResponse>, t: Throwable) {
+                Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

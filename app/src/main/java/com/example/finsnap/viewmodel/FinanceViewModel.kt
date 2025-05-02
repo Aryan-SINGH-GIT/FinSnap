@@ -35,6 +35,10 @@ class FinanceViewModel(application: Application): AndroidViewModel(application) 
     private val _cashTransactions = MutableLiveData<List<UserCash>>()
     val cashTransactions: LiveData<List<UserCash>> = _cashTransactions
 
+    // Event to notify a specific item was updated
+    private val _updatedTransaction = MutableLiveData<UserAmount>()
+    val updatedTransaction: LiveData<UserAmount> = _updatedTransaction
+
     fun InsertBankDetail(bankName: String, currentAmount: Double): UserBank {
         val userId = SessionManager.getUserToken()
         return UserBank(
@@ -119,5 +123,64 @@ class FinanceViewModel(application: Application): AndroidViewModel(application) 
             }
         }
     }
+
+
+    // Update transaction sender name and notify via event
+    fun updateTransactionSender(updatedTransaction: UserAmount) {
+        // Add debugging logs
+        android.util.Log.d("FinanceViewModel", "Updating transaction sender: ${updatedTransaction.sender}")
+        android.util.Log.d("FinanceViewModel", "Raw message: ${updatedTransaction.rawMessage}")
+        android.util.Log.d("FinanceViewModel", "Time: ${updatedTransaction.time}")
+
+        // Update the transaction in the current list
+        val currentList = _smsTransactions.value?.toMutableList() ?: mutableListOf()
+
+        // Log current list size
+        android.util.Log.d("FinanceViewModel", "Current list size: ${currentList.size}")
+
+        // Find the transaction with the same raw message and time
+        val index = currentList.indexOfFirst {
+            it.rawMessage == updatedTransaction.rawMessage && it.time == updatedTransaction.time
+        }
+
+        android.util.Log.d("FinanceViewModel", "Found index: $index")
+
+        if (index != -1) {
+            // Log before change
+            android.util.Log.d("FinanceViewModel", "Old sender: ${currentList[index].sender}")
+
+            // Replace the transaction with the updated one
+            currentList[index] = updatedTransaction
+
+            // Log after change
+            android.util.Log.d("FinanceViewModel", "New sender in list: ${currentList[index].sender}")
+
+            // Important: Set the value to a NEW list to trigger the observer
+            _smsTransactions.value = ArrayList(currentList)
+
+            // Emit event for the specific update - force a new object to trigger observers
+            _updatedTransaction.postValue(updatedTransaction.copy())
+
+            android.util.Log.d("FinanceViewModel", "Posted updated transaction event")
+        } else {
+            android.util.Log.e("FinanceViewModel", "Could not find transaction to update!")
+        }
+    }
+
+    fun loadSmsTransactionsFromDb(): LiveData<List<UserAmount>> {
+        return repository.getAllUserAmountsLive()
+    }
+
+    fun getAllUserAmountsLive(): LiveData<List<UserAmount>> {
+        return repository.getAllUserAmountsLive()
+    }
+
+    fun updateTransactionInDb(userAmount: UserAmount) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateUserAmount(userAmount)
+        }
+    }
+
+
 
 }

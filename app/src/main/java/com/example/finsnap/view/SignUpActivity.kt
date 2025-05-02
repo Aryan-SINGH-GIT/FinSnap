@@ -11,6 +11,7 @@ import androidx.room.Room
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.finsnap.databinding.ActivitySignUpBinding
 import com.example.finsnap.viewmodel.FinanceViewModel
+import com.example.finsnap.viewmodel.SessionManager
 import com.example.finsnap.viewmodel.UserDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -25,25 +26,33 @@ class SignUpActivity : AppCompatActivity() {
 //        Thread.sleep(10000)
 //        installSplashScreen()
 
+
+
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
         myfinanaceViewModel= ViewModelProvider(this).get(FinanceViewModel::class.java)
         database= Room.databaseBuilder(
             applicationContext,
             UserDatabase::class.java,
-            "finsnap_database"
+            "UserDatabase"
         ).fallbackToDestructiveMigration().build()
         binding.userSignUpSubmit.setOnClickListener {
             val userEmail = binding.userSignUpEmail.text.toString()
             val password = binding.userSignUpPassword.text.toString()
-
+            var userId :Int =0;
             if (userEmail.isNotEmpty() && password.isNotEmpty()) {
                 GlobalScope.launch {
                     var userData=myfinanaceViewModel.InsertUserData(userEmail,password)
                     database.UsersDao().insertUser(userData)
+                     userId = database.UsersDao().getUserByEmail(userEmail) as Int
+
 //                    Toast.makeText(this@SignUpActivity, "Signup successful!", Toast.LENGTH_SHORT).show()
                     Log.d("Signup", "Signup successful!")
                 }
+                SessionManager.saveUserEmail(userEmail)
+
+                SessionManager.saveUserToken(userId.toString())  // Make sure this is called
+
                 startActivity(Intent(this, LoginActivity::class.java))
             } else {
                 Toast.makeText(this@SignUpActivity, "fill all fields", Toast.LENGTH_SHORT).show()

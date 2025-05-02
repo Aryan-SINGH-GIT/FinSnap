@@ -11,6 +11,7 @@ import androidx.room.Room
 import com.example.finsnap.R
 import com.example.finsnap.databinding.ActivityBankDetailsBinding
 import com.example.finsnap.viewmodel.FinanceViewModel
+import com.example.finsnap.viewmodel.SessionManager
 import com.example.finsnap.viewmodel.UserDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -30,7 +31,7 @@ class BankDetails : AppCompatActivity() {
         database= Room.databaseBuilder(
             applicationContext,
             UserDatabase::class.java,
-            "finsnap_database"
+            "UserDatabase"
         ).fallbackToDestructiveMigration().build()
 
 
@@ -46,16 +47,19 @@ class BankDetails : AppCompatActivity() {
             val currentAmount = binding.currentAmount.text.toString().toDouble()
 
             GlobalScope.launch {
-                val userBank =myfinanaceViewModel.InsertBankDetail(selectedBankName,currentAmount)
+                val userBank = myfinanaceViewModel.InsertBankDetail(selectedBankName, currentAmount)
                 database.UsersDao().insertUserBank(userBank)
+
+                // ✅ Mark that user has completed bank details
+                SessionManager.setBankDetailsCompleted(true)
+
+
                 startActivity(Intent(this@BankDetails, MainActivity::class.java))
-
-
-
+                finish()
             }
+        }
 
     }
-}
 
 
 }

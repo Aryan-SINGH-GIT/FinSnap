@@ -31,5 +31,23 @@ object SessionManager {
         fun logout() {
             prefs.edit().clear().apply()
         }
+
+    fun setBankDetailsCompleted(completed: Boolean) {
+        prefs.edit().putBoolean("bank_details_completed", completed).apply()
     }
+
+    fun isBankDetailsCompleted(): Boolean {
+        return prefs.getBoolean("bank_details_completed", false)
+    }
+
+    // Add to SessionManager.kt
+    fun saveUserEmail(email: String) {
+        prefs.edit().putString("user_email", email).apply()
+    }
+
+    fun getUserEmail(): String? {
+        return prefs.getString("user_email", null)
+    }
+
+}
 

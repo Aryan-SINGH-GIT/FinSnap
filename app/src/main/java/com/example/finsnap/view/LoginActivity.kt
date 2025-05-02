@@ -27,7 +27,6 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SessionManager.init(this)
 
         binding=ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -36,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
         database= Room.databaseBuilder(
             applicationContext,
             UserDatabase::class.java,
-            "finsnap_database"
+            "UserDatabase"
         ).fallbackToDestructiveMigration().build()
 
 
@@ -50,9 +49,14 @@ class LoginActivity : AppCompatActivity() {
                 GlobalScope.launch {
                     isValid = database.UsersDao().validateCredentials(email, password)
                     if (isValid){
-                        var userId=database.UsersDao().getUserByEmail(email)
-                       SessionManager.saveUserToken(userId.toString())
+                        val userId = database.UsersDao().getUserByEmail(email)
+                        SessionManager.saveUserToken(userId.toString())
+
+                        // ✅ Mark user as logged in
+                        SessionManager.setLoggedIn(true)
+
                     }
+
 
 
                     runOnUiThread {

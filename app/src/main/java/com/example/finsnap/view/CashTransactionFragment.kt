@@ -28,12 +28,14 @@ class CashTransactionFragment : Fragment() {
     private lateinit var cashAdapter: CashAdapter
 
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCashTransactionBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity())[FinanceViewModel::class.java]
+
 
         setupRecyclerView()
         setupFab()

@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         database= Room.databaseBuilder(
             applicationContext,
             UserDatabase::class.java,
-            "finsnap_database"
+            "UserDatabase"
         ).fallbackToDestructiveMigration().build()
         checkSmsPermission()
 

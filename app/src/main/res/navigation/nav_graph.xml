@@ -4,20 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/transactionDetailFragment"
+        android:name="com.example.finsnap.view.TransactionDetailFragment"
+        android:label="Transaction Detail"
+        tools:layout="@layout/fragment_transaction_detail">
+        <argument
+            android:name="transaction"
+            app:argType="com.example.finsnap.model.UserAmount" />
+        <action
+            android:id="@+id/action_transactionDetailFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.finsnap.view.HomeFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_transactionDetailFragment"
+            app:destination="@id/transactionDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/articleFragment"
         android:name="com.example.finsnap.view.ArticleFragment"
         android:label="Article"
         tools:layout="@layout/fragment_article" />
+
     <fragment
-        android:id="@+id/cashFragment"
+        android:id="@+id/cashTransactionFragment"
         android:name="com.example.finsnap.view.CashTransactionFragment"
         android:label="Cash Transactions"
         tools:layout="@layout/fragment_cash_transaction">

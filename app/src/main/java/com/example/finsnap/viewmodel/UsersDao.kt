@@ -8,6 +8,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import com.example.finsnap.model.UserAmount
 import com.example.finsnap.model.UserBank
 import com.example.finsnap.model.UserCash
 import com.example.finsnap.model.UserWithBank
@@ -43,8 +44,6 @@ interface UsersDao {
     @Query("SELECT bankName FROM userBank WHERE userId = :userId")
     suspend fun getBankName(userId: Int): String
 
-
-
     @Query("SELECT * FROM users")
     fun getAllStudents(): LiveData<List<UserData>>
 
@@ -58,13 +57,27 @@ interface UsersDao {
     @Query("SELECT * FROM users WHERE id = :userId")
     fun getUserWithBank(userId: Int): LiveData<UserWithBank>
 
-
     @Insert
     suspend fun insertUserCash(userCash: UserCash)
 
-
     @Query("SELECT * FROM userCash ORDER BY id DESC")
     suspend fun getAllCashTransactions(): List<UserCash>
+
+    @Insert
+    suspend fun insertUserAmount(userAmount: UserAmount)
+
+    @Update
+    suspend fun updateUserAmount(userAmount: UserAmount)
+
+    @Query("SELECT * FROM user_amounts ORDER BY id DESC")
+    fun getAllUserAmounts(): LiveData<List<UserAmount>>
+
+    @Query("SELECT * FROM user_amounts ORDER BY id DESC")
+    suspend fun getAllUserAmountsNow(): List<UserAmount>
+
+    // In UsersDao.kt, change:
+//    @Query("SELECT ID FROM users WHERE email = :email LIMIT 1")
+//    suspend fun getUserByEmail(email: String): UserData? // Return the full user object or null
 
 
 }

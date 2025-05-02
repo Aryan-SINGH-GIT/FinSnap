@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.ArticleFragment">
-
-    <!-- TODO: Update blank fragment layout -->
+    tools:context=".view.ArticleFragment"
+    android:layout_height="match_parent">
     <TextView
-        android:layout_gravity="center"
-        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Article"
+        android:layout_gravity="center"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/articleRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="article" />
-
-</FrameLayout>
+        android:layout_height="match_parent"/>
+    <ProgressBar
+        android:id="@+id/loadingIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+  />
+</LinearLayout>
