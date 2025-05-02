@@ -49,6 +49,25 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Category:"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp"
+            android:id="@+id/categoryLabel"
+            />
+        <TextView
+            android:padding="12dp"
+            android:id="@+id/categoryText"
+            android:background="@drawable/edit_text_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Miscellaneous"
+            android:textColor="#555555"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="UPI Ref:"
             android:textStyle="bold"
             android:textSize="14sp"

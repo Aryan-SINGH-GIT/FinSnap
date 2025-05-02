@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.finsnap.R
@@ -21,6 +22,9 @@ import java.util.Locale
 class AddCashFragment : Fragment() {
    private lateinit var binding: FragmentAddCashBinding
     private lateinit var viewModel: FinanceViewModel
+    private var selectedCategory: String = "Miscellaneous"
+    private var selectedCategoryImage: Int = R.drawable.ic_miscellaneous
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +34,7 @@ class AddCashFragment : Fragment() {
         binding=FragmentAddCashBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity())[FinanceViewModel::class.java]
 
+        listenForCategoryResult()
         setupClickListeners()
 
 
@@ -44,43 +49,82 @@ class AddCashFragment : Fragment() {
         binding.cancelBtn.setOnClickListener {
             findNavController().navigateUp()
         }
+
+        binding.categoryImage.setOnClickListener {
+            findNavController().navigate(R.id.action_addCashFragment_to_categoryFragment)
+
+        }
+        binding.categorycash.setOnClickListener {
+            findNavController().navigate(R.id.action_addCashFragment_to_categoryFragment)
+
+        }
     }
 
 
-        private fun saveCashTransaction() {
-            val description = binding.dicription.text.toString().trim()
-            val amountText = binding.amount.text.toString().trim()
+    private fun listenForCategoryResult() {
+        setFragmentResultListener("category_result") { _, bundle ->
+            selectedCategory = bundle.getString("selectedCategory") ?: "Miscellaneous"
+            selectedCategoryImage = bundle.getInt("categoryImage", R.drawable.ic_miscellaneous)
 
-            if (description.isEmpty() || amountText.isEmpty()) {
-                Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
-                return
-            }
-
-            // Determine if it's a credit or debit transaction
-            val imageResource = if (amountText.startsWith("+")) {
-                R.drawable.logo
-            } else {
-                R.drawable.ic_cash
-            }
-
-            // Format the current time
-            val currentTime = SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault()).format(
-                java.util.Date()
-            )
-
-            val cashTransaction = UserCash(
-                cashSender = description,
-                cashTime = currentTime,
-                CashamtChange = amountText,
-                cashImage = imageResource
-            )
-
-            // Save the transaction via ViewModel
-            viewModel.insertCashTransaction(cashTransaction)
-
-            // Navigate back to the CashTransactionFragment
-            findNavController().navigateUp()
+            binding.categorycash.text = selectedCategory
+            binding.categoryImage.setImageResource(selectedCategoryImage)
         }
+    }
+
+
+    private fun saveCashTransaction() {
+        val description = binding.dicription.text.toString().trim()
+        val amountText = binding.amount.text.toString().trim()
+
+        if (description.isEmpty() || amountText.isEmpty()) {
+            Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Validate that amount starts with + or -
+        if (!amountText.startsWith("+") && !amountText.startsWith("-")) {
+            Toast.makeText(requireContext(), "Amount must start with + (income) or - (expense)", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+
+        // Determine if it's a credit or debit transaction
+        val isCredit = amountText.startsWith("+")
+        val imageResource = if (isCredit) {
+            R.drawable.logo
+        } else {
+            R.drawable.ic_cash
+        }
+
+        // Parse the amount without the + or - sign
+        val amountValue = amountText.substring(1).toDoubleOrNull()
+        if (amountValue == null) {
+            Toast.makeText(requireContext(), "Invalid amount format", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+
+
+        // Format the current time
+        val currentTime = SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault()).format(Date())
+
+        val cashTransaction = UserCash(
+            cashSender = description,
+            cashTime = currentTime,
+            CashamtChange = amountText,
+            cashImage = selectedCategoryImage,
+            categoryName = selectedCategory
+        )
+
+        // Save the transaction via ViewModel
+        viewModel.insertCashTransaction(cashTransaction)
+
+        // Update the cash balance
+        viewModel.updateCashBalance(amountValue, isCredit)
+
+        // Navigate back to the CashTransactionFragment
+        findNavController().navigateUp()
+    }
 
 
 }

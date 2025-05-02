@@ -39,7 +39,11 @@ class CashTransactionFragment : Fragment() {
 
         setupRecyclerView()
         setupFab()
-        observeTransactions()
+        observeData()
+
+        viewModel.loadUserBankDetails()
+
+
 
         return binding.root
     }
@@ -58,9 +62,22 @@ class CashTransactionFragment : Fragment() {
         }
     }
 
-    private fun observeTransactions() {
+    private fun observeData() {
+        // Observe cash transactions
         viewModel.cashTransactions.observe(viewLifecycleOwner) { transactions ->
             cashAdapter.updateItems(transactions)
+
+            // Hide or show "no transactions" message
+            if (transactions.isEmpty()) {
+                binding.tvNoTransactions.visibility = View.VISIBLE
+            } else {
+                binding.tvNoTransactions.visibility = View.GONE
+            }
+        }
+
+        // Observe cash balance
+        viewModel.cashBalance.observe(viewLifecycleOwner) { balance ->
+            binding.tvCashBalance.text = String.format("Current Cash Balance: ₹%.2f", balance)
         }
     }
 

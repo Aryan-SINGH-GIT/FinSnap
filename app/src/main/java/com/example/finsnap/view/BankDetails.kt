@@ -45,9 +45,12 @@ class BankDetails : AppCompatActivity() {
         binding.btnGetStarted.setOnClickListener {
             val selectedBankName = binding.bankSpinner.selectedItem.toString()
             val currentAmount = binding.currentAmount.text.toString().toDouble()
+            val cashAmount = binding.cashAmount.text.toString().toDouble()
+            val savingTarget = binding.savingtarget.text.toString().toDouble()
 
             GlobalScope.launch {
-                val userBank = myfinanaceViewModel.InsertBankDetail(selectedBankName, currentAmount)
+                val userBank = myfinanaceViewModel.InsertBankDetail(selectedBankName,currentAmount,cashAmount,savingTarget
+                )
                 database.UsersDao().insertUserBank(userBank)
 
                 // ✅ Mark that user has completed bank details

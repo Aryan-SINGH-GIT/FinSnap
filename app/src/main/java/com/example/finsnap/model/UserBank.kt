@@ -21,5 +21,8 @@ data class UserBank(
     val bankid: Int = 0,
     val userId: String?,/////////////////////problemmmmmmmmmm
     val bankName: String,
-    val currentAmount: Double
+    val currentAmount: Double,
+    val cashAmount :String,
+    val savingTarget:String
+
 )

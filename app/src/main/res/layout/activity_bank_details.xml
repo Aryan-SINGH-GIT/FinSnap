@@ -52,6 +52,35 @@
         android:textColor="#EEEEEE"/>
 
 
+    <EditText
+        android:id="@+id/cashAmount"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Current Cash Amount"
+        android:inputType="numberDecimal"
+        android:layout_below="@id/currentAmount"
+        android:layout_marginTop="10dp"
+        android:padding="12dp"
+        android:background="@android:drawable/editbox_background"
+        android:textColorHint="#AAAAAA"
+        android:textColor="#EEEEEE"/>
+
+    <EditText
+        android:id="@+id/savingtarget"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Monthly Saving Amount"
+        android:inputType="numberDecimal"
+        android:layout_below="@id/cashAmount"
+        android:layout_marginTop="10dp"
+        android:padding="12dp"
+        android:background="@android:drawable/editbox_background"
+        android:textColorHint="#AAAAAA"
+        android:textColor="#EEEEEE"/>
+
+
 
 
     <TextView

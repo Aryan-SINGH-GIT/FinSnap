@@ -26,6 +26,7 @@ class AmoutAdapter(
 
     override fun onBindViewHolder(holder: AmoutViewHolder, position: Int) {
         holder.bind(items[position])
+
     }
 
     fun updateItems(newItems: List<UserAmount>) {
@@ -84,16 +85,19 @@ class AmoutAdapter(
         private val time = view.findViewById<TextView>(R.id.time)
         private val amtImage = view.findViewById<ImageView>(R.id.amtImage)
         private val amtChange = view.findViewById<TextView>(R.id.amtChange)
+        private val categoryText = view.findViewById<TextView>(R.id.categoryText) // ✅ Add this in item layout
 
         fun bind(userAmount: UserAmount) {
             sender.text = userAmount.sender
             time.text = userAmount.time
-            amtImage.setImageResource(userAmount.amtImage)
+            amtImage.setImageResource(userAmount.categoryImage)
             amtChange.text = userAmount.amtChange
+//            categoryText.text = userAmount.category
 
             itemView.setOnClickListener {
                 onItemClick(userAmount)
             }
         }
     }
+
 }

@@ -1,0 +1,294 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:padding="16dp"
+       android:gravity="center_horizontal">
+
+      <!-- Row 1 -->
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:gravity="center">
+
+         <!-- Food & Drink -->
+         <RelativeLayout
+             android:layout_width="0dp"
+             android:layout_weight="1"
+             android:layout_height="wrap_content"
+             android:layout_margin="8dp"
+             android:gravity="center">
+
+            <ImageView
+                android:id="@+id/ic_foodanddrink"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_foodanddrink"
+                android:contentDescription="Food and Drink" />
+
+            <TextView
+                android:layout_below="@id/ic_foodanddrink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Food and Drink"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+         </RelativeLayout>
+
+         <!-- Entertainment -->
+         <RelativeLayout
+             android:layout_width="0dp"
+             android:layout_weight="1"
+             android:layout_height="wrap_content"
+             android:layout_margin="8dp">
+
+            <ImageView
+                android:id="@+id/ic_entertainment"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_entertainment"
+                android:contentDescription="Entertainment" />
+
+            <TextView
+                android:layout_below="@id/ic_entertainment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Entertainment"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+         </RelativeLayout>
+
+         <!-- Groceries -->
+         <RelativeLayout
+             android:layout_width="0dp"
+             android:layout_weight="1"
+             android:layout_height="wrap_content"
+             android:layout_margin="8dp">
+
+            <ImageView
+                android:id="@+id/ic_grocerries"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_grocerries"
+                android:contentDescription="Groceries" />
+
+            <TextView
+                android:layout_below="@id/ic_grocerries"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Groceries"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+         </RelativeLayout>
+      </LinearLayout>
+
+      <!-- Row 2: Shopping, Travel, Transportation -->
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:gravity="center">
+
+         <!-- Shopping -->
+         <RelativeLayout
+             android:layout_width="0dp"
+             android:layout_weight="1"
+             android:layout_height="wrap_content"
+             android:layout_margin="8dp">
+
+            <ImageView
+                android:id="@+id/ic_shopping"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_shopping"
+                android:contentDescription="Shopping" />
+
+            <TextView
+                android:layout_below="@id/ic_shopping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Shopping"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+         </RelativeLayout>
+
+         <!-- Travel -->
+         <RelativeLayout
+             android:layout_width="0dp"
+             android:layout_weight="1"
+             android:layout_height="wrap_content"
+             android:layout_margin="8dp">
+
+            <ImageView
+                android:id="@+id/ic_tranportation"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_tranportation"
+                android:contentDescription="tranportation" />
+
+            <TextView
+                android:layout_below="@id/ic_tranportation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="tranportation"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+         </RelativeLayout>
+
+         <!-- Transportation -->
+         <RelativeLayout
+             android:layout_width="0dp"
+             android:layout_weight="1"
+             android:layout_height="wrap_content"
+             android:layout_margin="8dp">
+
+            <ImageView
+                android:id="@+id/ic_travel"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_travel"
+                android:contentDescription="Travel" />
+
+            <TextView
+                android:layout_below="@id/ic_travel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Travel"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+         </RelativeLayout>
+      </LinearLayout>
+
+      <!-- Row 3: Miscellaneous, Invoice, Workout -->
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:gravity="center">
+
+         <!-- Miscellaneous -->
+         <RelativeLayout
+             android:layout_width="0dp"
+             android:layout_weight="1"
+             android:layout_height="wrap_content"
+             android:layout_margin="8dp">
+
+            <ImageView
+                android:id="@+id/ic_education"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/education"
+                android:contentDescription="Education" />
+
+            <TextView
+                android:layout_below="@id/ic_education"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Education"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+         </RelativeLayout>
+
+         <!-- Invoice -->
+         <RelativeLayout
+             android:layout_width="0dp"
+             android:layout_weight="1"
+             android:layout_height="wrap_content"
+             android:layout_margin="8dp">
+
+            <ImageView
+                android:id="@+id/ic_invoice"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/invoice"
+                android:contentDescription="Bill" />
+
+            <TextView
+                android:layout_below="@id/ic_invoice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Bill"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+         </RelativeLayout>
+
+         <!-- Workout -->
+         <RelativeLayout
+             android:layout_width="0dp"
+             android:layout_weight="1"
+             android:layout_height="wrap_content"
+             android:layout_margin="8dp">
+
+            <ImageView
+                android:id="@+id/ic_workoutandhealth"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_workoutandhealth"
+                android:contentDescription="Workout" />
+
+            <TextView
+                android:layout_below="@id/ic_workoutandhealth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Workout"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+         </RelativeLayout>
+      </LinearLayout>
+
+      <!-- Row 4: Education (single item centered) -->
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:orientation="horizontal">
+
+         <RelativeLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_margin="8dp">
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:id="@+id/ic_miscellaneous"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="Miscellaneous"
+                android:src="@drawable/ic_miscellaneous" />
+
+            <TextView
+                android:layout_below="@id/ic_miscellaneous"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Miscellaneous"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+         </RelativeLayout>
+      </LinearLayout>
+
+   </LinearLayout>
+</ScrollView>

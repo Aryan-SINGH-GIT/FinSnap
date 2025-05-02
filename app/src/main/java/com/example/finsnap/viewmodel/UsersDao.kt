@@ -60,6 +60,14 @@ interface UsersDao {
     @Insert
     suspend fun insertUserCash(userCash: UserCash)
 
+    // Add method to update bank details
+    @Update
+    suspend fun updateUserBank(userBank: UserBank)
+
+    // Get user bank by userId
+    @Query("SELECT * FROM userBank WHERE userId = :userId LIMIT 1")
+    suspend fun getUserBankByUserId(userId: String): UserBank?
+
     @Query("SELECT * FROM userCash ORDER BY id DESC")
     suspend fun getAllCashTransactions(): List<UserCash>
 

@@ -6,11 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+
+import com.example.finsnap.R
 import com.example.finsnap.databinding.FragmentTransactionDetailBinding
 import com.example.finsnap.model.UserAmount
+//import com.example.finsnap.model.UserAmount
 import com.example.finsnap.viewmodel.FinanceViewModel
 
 class TransactionDetailFragment : Fragment() {
@@ -45,11 +49,58 @@ class TransactionDetailFragment : Fragment() {
         binding.rawMessage.text = transaction.rawMessage
         binding.upiRef.text = extractUpiReference(transaction.rawMessage)
 
-        binding.saveButton.setOnClickListener {
-            val newName = binding.editSender.text.toString()
+        binding.categoryText.text = transaction.category
 
-            // Create updated transaction with new sender name
-            val updatedTransaction = transaction.copy(sender = newName)
+        binding.categoryLabel.setOnClickListener {
+
+            findNavController().navigate(R.id.action_transactionDetailFragment_to_categoryFragment)
+
+
+        }
+        binding.categoryText.setOnClickListener {
+
+            findNavController().navigate(R.id.action_transactionDetailFragment_to_categoryFragment)
+
+
+        }
+
+        binding.transactionImage.setOnClickListener {
+            findNavController().navigate(R.id.action_transactionDetailFragment_to_categoryFragment)
+
+
+        }
+
+        setFragmentResultListener("category_result") { _, bundle ->
+            val category = bundle.getString("selectedCategory") ?: "Miscellaneous"
+            val image = bundle.getInt("categoryImage", R.drawable.ic_miscellaneous)
+
+            transaction = transaction.copy(category = category, categoryImage = image)
+            binding.transactionImage.setImageResource(image)
+            binding.categoryText.text = category
+        }
+
+
+
+
+
+
+
+
+        binding.saveButton.setOnClickListener {
+
+
+
+
+
+
+            val newName = binding.editSender.text.toString()
+            // ✅ Preserve updated category + name
+            val updatedTransaction = transaction.copy(
+                sender = newName,
+                category = transaction.category,
+                categoryImage = transaction.categoryImage
+            )
+
 
             // Update the transaction in the ViewModel
             viewModel.updateTransactionInDb(updatedTransaction)
@@ -62,6 +113,7 @@ class TransactionDetailFragment : Fragment() {
                 TransactionDetailFragmentDirections.actionTransactionDetailFragmentToHomeFragment()
             )
         }
+
     }
 
     private fun extractUpiReference(message: String): String {
