@@ -23,6 +23,10 @@ class CategoryFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentCategoryBinding.inflate(inflater, container, false)
 
+        // Setup back button
+        binding.backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
 
         binding.icFoodanddrink.setOnClickListener {
             updateCategoryAndGoBack( "Food & Drink", R.drawable.ic_foodanddrink)

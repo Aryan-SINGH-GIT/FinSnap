@@ -5,28 +5,97 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.HomeFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/bg_background" >
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/textView"
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:gravity="center"
-        android:text="current amount"
-        android:textSize="20dp"
-        android:textStyle="bold"
+        android:layout_height="250dp"
+        android:id="@+id/cardView"
+        android:background="#F8F4A6"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="4dp"
+       android:layout_margin="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_constraintBottom_totopOf="myrecyclerview" />
+        tools:layout_constraintBottom_totopOf="filter">
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F8F4A6"
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/myrecyclerview"
+           />
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/filters"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        >
+        <Button
+            android:layout_gravity="center"
+            android:id="@+id/btnPickDate"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:backgroundTint="#2f9062"
+            android:text="Pick Date"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:layout_marginEnd="5dp"
+            />
+
+
+
+        <Spinner
+
+            android:id="@+id/filterSpinner"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:textAlignment="center"
+            android:entries="@array/transaction_filters"
+           android:layout_weight="1"
+            android:spinnerMode="dropdown"
+            android:popupBackground="#296346"
+            android:layout_marginStart="5dp"
+          android:backgroundTintMode="screen"
+            android:backgroundTint="@color/black"
+          android:background="#2f9062"
+
+
+
+            />
+
+
+    </LinearLayout>
+
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+
+            android:id="@+id/myrecyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/filters"
+            />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,7 +15,9 @@
             app:argType="com.example.finsnap.model.UserAmount" />
         <action
             android:id="@+id/action_transactionDetailFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_transactionDetailFragment_to_categoryFragment"
             app:destination="@id/categoryFragment" />
@@ -47,7 +49,6 @@
             app:destination="@id/addCashFragment" />
     </fragment>
 
-
     <fragment
         android:id="@+id/nav_acount"
         android:name="com.example.finsnap.view.AcountFragment"
@@ -57,6 +58,19 @@
         android:id="@+id/nav_info"
         android:name="com.example.finsnap.view.InfoFragment"
         android:label="Info" />
+        
+    <!-- Add a global action for logout that can be accessed from any destination -->
+    <action
+        android:id="@+id/nav_logout"
+        app:destination="@id/loginDestination"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true" />
+
+    <!-- Add a destination for login -->
+    <activity
+        android:id="@+id/loginDestination"
+        android:name="com.example.finsnap.view.LoginActivity"
+        android:label="Login" />
 
     <fragment
         android:id="@+id/addCashFragment"
@@ -66,14 +80,15 @@
 
         <action
             android:id="@+id/action_addCashFragment_to_cashTransactionFragment"
-            app:destination="@id/cashTransactionFragment" />
+            app:destination="@id/cashTransactionFragment"
+            app:popUpTo="@id/cashTransactionFragment"
+            app:popUpToInclusive="false" />
 
         <action
             android:id="@+id/action_addCashFragment_to_categoryFragment"
             app:destination="@id/categoryFragment" />
 
     </fragment>
-
 
     <!-- ✅ Added CategoryFragment -->
     <fragment
@@ -85,12 +100,27 @@
             android:id="@+id/action_categoryFragment_to_transactionDetailFragment"
             app:destination="@id/transactionDetailFragment" />
         <action
-            android:id="@+id/action_addCashFragment_to_categoryFragment"
+            android:id="@+id/action_categoryFragment_to_addCashFragment"
             app:destination="@id/addCashFragment" />
     </fragment>
 
-
-
-
+    <!-- Global Actions for Bottom Navigation -->
+    <action
+        android:id="@+id/action_global_homeFragment"
+        app:destination="@id/homeFragment"
+        app:popUpTo="@id/homeFragment"
+        app:popUpToInclusive="true" />
+        
+    <action
+        android:id="@+id/action_global_cashTransactionFragment"
+        app:destination="@id/cashTransactionFragment"
+        app:popUpTo="@id/cashTransactionFragment"
+        app:popUpToInclusive="true" />
+        
+    <action
+        android:id="@+id/action_global_articleFragment"
+        app:destination="@id/articleFragment"
+        app:popUpTo="@id/articleFragment"
+        app:popUpToInclusive="true" />
 
 </navigation>

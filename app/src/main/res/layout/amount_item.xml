@@ -1,47 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="75dp"
-    android:padding="10dp">
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="#FFFFFF"
+    >
 
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/amtImage"
-        android:src="@drawable/ic_miscellaneous"
-        android:layout_margin="5dp"
-        app:tint="@color/white" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:padding="10dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SENDER/RECIVER"
-        android:textSize="20dp"
-        android:id="@+id/sender"
-        android:layout_margin="5dp"
-        android:layout_toRightOf="@+id/amtImage"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/time"
-        android:text="TIME"
-        android:textSize="15dp"
-        android:layout_marginStart="5dp"
+        <ImageView
+            android:id="@+id/amtImage"
 
-        android:layout_toRightOf="@+id/amtImage"
-        android:layout_below="@+id/sender"/>
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_miscellaneous"
+            app:tint="#222222" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:text="+50"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="15dp"
-        android:id="@+id/amtChange"
-        android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/sender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/amtImage"
+            android:layout_margin="5dp"
+            android:text="SENDER/RECIVER"
 
+            android:textSize="18sp"
+            android:textColor="#222222" />
 
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sender"
+            android:layout_toRightOf="@+id/amtImage"
+            android:layout_marginStart="5dp"
+            android:text="TIME"
+            android:textSize="14sp"
+            android:textColor="#222222" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/amtChange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:text="+50"
+            android:textSize="18sp"
+            android:textColor="#11A964" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

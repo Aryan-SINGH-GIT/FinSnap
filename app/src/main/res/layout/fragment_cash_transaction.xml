@@ -4,60 +4,115 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_background"
     tools:context=".view.CashTransactionFragment">
 
-    <!-- Cash Balance Text View -->
+    <!-- Cash Balance -->
 
-    <!-- RecyclerView for Cash Transactions -->
-    <TextView
-        android:id="@+id/tvCashBalance"
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:gravity="center"
-        android:padding="12dp"
-        android:text="Current Cash Balance: ₹0.00"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCashTransactions"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="250dp"
+        android:id="@+id/cardViewcash"
+        android:background="#F8F4A6"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="4dp"
+        android:layout_margin="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCashBalance" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_constraintBottom_totopOf="filterSpinner">
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/CashViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F8F4A6"
 
-    <!-- No Transactions Text View -->
-    <TextView
-        android:id="@+id/tvNoTransactions"
-        android:layout_width="wrap_content"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="No cash transactions yet"
-        android:textSize="16sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
+        android:id="@+id/filterscash"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewcash"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        >
+        <Button
+            android:id="@+id/btnPickDatecash"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:backgroundTint="#2f9062"
+            android:text="Pick Date"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:layout_marginEnd="5dp"/>
+        <Spinner
+            android:id="@+id/filterSpinnercash"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:textAlignment="center"
+            android:entries="@array/transaction_filters"
+            android:layout_weight="1"
+            android:spinnerMode="dropdown"
+            android:popupBackground="#296346"
+            android:layout_marginStart="5dp"
+            android:backgroundTintMode="screen"
+            android:backgroundTint="@color/black"
+            android:background="#2f9062"/>
 
-    <!-- Floating Action Button to add new transactions -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddTransaction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <!-- Spinner -->
+
+
+    <!-- Pick Date Button -->
+
+
+    <!-- RecyclerView -->
+<androidx.recyclerview.widget.RecyclerView
+android:id="@+id/rvCashTransactions"
+android:layout_width="0dp"
+android:layout_height="0dp"
+android:layout_marginTop="8dp"
+app:layout_constraintTop_toBottomOf="@id/filterscash"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- No Transactions Text -->
+<TextView
+android:id="@+id/tvNoTransactions"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="No cash transactions yet"
+android:textSize="16sp"
+android:textColor="#1e352f"
+android:visibility="gone"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- FAB -->
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+android:id="@+id/fabAddTransaction"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_margin="16dp"
+android:src="@drawable/ic_add"
+app:tint="@android:color/white"
+app:backgroundTint="#2f9062"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+ app:circularflow_defaultRadius="200dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>

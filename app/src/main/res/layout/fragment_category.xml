@@ -1,13 +1,41 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_background">
 
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:orientation="vertical"
        android:padding="16dp"
-       android:gravity="center_horizontal">
+       android:gravity="center_horizontal"
+      >
+
+      <!-- Header with back button -->
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="16dp">
+
+          <ImageButton
+              android:id="@+id/backButton"
+              android:layout_width="40dp"
+              android:layout_height="40dp"
+              android:layout_alignParentStart="true"
+              android:layout_centerVertical="true"
+              android:background="?attr/selectableItemBackgroundBorderless"
+              android:src="@android:drawable/ic_menu_close_clear_cancel"
+              android:contentDescription="Back" />
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_centerInParent="true"
+              android:text="Select Category"
+              android:textSize="20sp"
+              android:textStyle="bold"
+              android:textColor="#1e352f" />
+      </RelativeLayout>
 
       <!-- Row 1 -->
       <LinearLayout
@@ -22,7 +50,11 @@
              android:layout_weight="1"
              android:layout_height="wrap_content"
              android:layout_margin="8dp"
-             android:gravity="center">
+             android:gravity="center"
+             android:background="?attr/selectableItemBackground"
+             android:clickable="true"
+             android:focusable="true"
+             >
 
             <ImageView
                 android:id="@+id/ic_foodanddrink"
@@ -39,7 +71,9 @@
                 android:layout_centerHorizontal="true"
                 android:text="Food and Drink"
                 android:textSize="12sp"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="4dp"
+                android:textColor="#333333"
+                />
          </RelativeLayout>
 
          <!-- Entertainment -->
@@ -47,7 +81,11 @@
              android:layout_width="0dp"
              android:layout_weight="1"
              android:layout_height="wrap_content"
-             android:layout_margin="8dp">
+             android:layout_margin="8dp"
+             android:background="?attr/selectableItemBackground"
+             android:clickable="true"
+             android:focusable="true"
+             >
 
             <ImageView
                 android:id="@+id/ic_entertainment"
@@ -64,6 +102,7 @@
                 android:layout_centerHorizontal="true"
                 android:text="Entertainment"
                 android:textSize="12sp"
+                android:textColor="#333333"
                 android:layout_marginTop="4dp" />
          </RelativeLayout>
 
@@ -72,7 +111,11 @@
              android:layout_width="0dp"
              android:layout_weight="1"
              android:layout_height="wrap_content"
-             android:layout_margin="8dp">
+             android:layout_margin="8dp"
+             android:background="?attr/selectableItemBackground"
+             android:clickable="true"
+             android:focusable="true"
+             >
 
             <ImageView
                 android:id="@+id/ic_grocerries"
@@ -88,6 +131,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="Groceries"
+                android:textColor="#333333"
                 android:textSize="12sp"
                 android:layout_marginTop="4dp" />
          </RelativeLayout>
@@ -105,7 +149,11 @@
              android:layout_width="0dp"
              android:layout_weight="1"
              android:layout_height="wrap_content"
-             android:layout_margin="8dp">
+             android:layout_margin="8dp"
+             android:background="?attr/selectableItemBackground"
+             android:clickable="true"
+             android:focusable="true"
+             >
 
             <ImageView
                 android:id="@+id/ic_shopping"
@@ -121,6 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="Shopping"
+                android:textColor="#333333"
                 android:textSize="12sp"
                 android:layout_marginTop="4dp" />
          </RelativeLayout>
@@ -130,7 +179,11 @@
              android:layout_width="0dp"
              android:layout_weight="1"
              android:layout_height="wrap_content"
-             android:layout_margin="8dp">
+             android:layout_margin="8dp"
+             android:background="?attr/selectableItemBackground"
+             android:clickable="true"
+             android:focusable="true"
+             >
 
             <ImageView
                 android:id="@+id/ic_tranportation"
@@ -147,6 +200,7 @@
                 android:layout_centerHorizontal="true"
                 android:text="tranportation"
                 android:textSize="12sp"
+                android:textColor="#333333"
                 android:layout_marginTop="4dp" />
          </RelativeLayout>
 
@@ -155,7 +209,11 @@
              android:layout_width="0dp"
              android:layout_weight="1"
              android:layout_height="wrap_content"
-             android:layout_margin="8dp">
+             android:layout_margin="8dp"
+             android:background="?attr/selectableItemBackground"
+             android:clickable="true"
+             android:focusable="true"
+             >
 
             <ImageView
                 android:id="@+id/ic_travel"
@@ -171,6 +229,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="Travel"
+                android:textColor="#333333"
                 android:textSize="12sp"
                 android:layout_marginTop="4dp" />
          </RelativeLayout>
@@ -188,7 +247,11 @@
              android:layout_width="0dp"
              android:layout_weight="1"
              android:layout_height="wrap_content"
-             android:layout_margin="8dp">
+             android:layout_margin="8dp"
+             android:background="?attr/selectableItemBackground"
+             android:clickable="true"
+             android:focusable="true"
+             >
 
             <ImageView
                 android:id="@+id/ic_education"
@@ -204,6 +267,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="Education"
+                android:textColor="#333333"
                 android:textSize="12sp"
                 android:layout_marginTop="4dp" />
          </RelativeLayout>
@@ -213,7 +277,11 @@
              android:layout_width="0dp"
              android:layout_weight="1"
              android:layout_height="wrap_content"
-             android:layout_margin="8dp">
+             android:layout_margin="8dp"
+             android:background="?attr/selectableItemBackground"
+             android:clickable="true"
+             android:focusable="true"
+             >
 
             <ImageView
                 android:id="@+id/ic_invoice"
@@ -229,6 +297,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="Bill"
+                android:textColor="#333333"
                 android:textSize="12sp"
                 android:layout_marginTop="4dp" />
          </RelativeLayout>
@@ -238,7 +307,11 @@
              android:layout_width="0dp"
              android:layout_weight="1"
              android:layout_height="wrap_content"
-             android:layout_margin="8dp">
+             android:layout_margin="8dp"
+             android:background="?attr/selectableItemBackground"
+             android:clickable="true"
+             android:focusable="true"
+             >
 
             <ImageView
                 android:id="@+id/ic_workoutandhealth"
@@ -254,6 +327,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="Workout"
+                android:textColor="#333333"
                 android:textSize="12sp"
                 android:layout_marginTop="4dp" />
          </RelativeLayout>
@@ -269,7 +343,11 @@
          <RelativeLayout
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:layout_margin="8dp">
+             android:layout_margin="8dp"
+             android:background="?attr/selectableItemBackground"
+             android:clickable="true"
+             android:focusable="true"
+             >
 
             <ImageView
                 android:layout_centerInParent="true"
@@ -285,6 +363,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="Miscellaneous"
+                android:textColor="#333333"
                 android:textSize="12sp"
                 android:layout_marginTop="4dp" />
          </RelativeLayout>

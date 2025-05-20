@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.finsnap.R
 import com.example.finsnap.databinding.FragmentAddCashBinding
@@ -49,6 +50,10 @@ class AddCashFragment : Fragment() {
         binding.cancelBtn.setOnClickListener {
             findNavController().navigateUp()
         }
+        
+        binding.backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
 
         binding.categoryImage.setOnClickListener {
             findNavController().navigate(R.id.action_addCashFragment_to_categoryFragment)
@@ -73,7 +78,7 @@ class AddCashFragment : Fragment() {
 
 
     private fun saveCashTransaction() {
-        val description = binding.dicription.text.toString().trim()
+        val description = binding.description.text.toString().trim()
         val amountText = binding.amount.text.toString().trim()
 
         if (description.isEmpty() || amountText.isEmpty()) {
@@ -87,23 +92,12 @@ class AddCashFragment : Fragment() {
             return
         }
 
-
-        // Determine if it's a credit or debit transaction
-        val isCredit = amountText.startsWith("+")
-        val imageResource = if (isCredit) {
-            R.drawable.logo
-        } else {
-            R.drawable.ic_cash
-        }
-
         // Parse the amount without the + or - sign
         val amountValue = amountText.substring(1).toDoubleOrNull()
         if (amountValue == null) {
             Toast.makeText(requireContext(), "Invalid amount format", Toast.LENGTH_SHORT).show()
             return
         }
-
-
 
         // Format the current time
         val currentTime = SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault()).format(Date())
@@ -119,11 +113,15 @@ class AddCashFragment : Fragment() {
         // Save the transaction via ViewModel
         viewModel.insertCashTransaction(cashTransaction)
 
-        // Update the cash balance
-        viewModel.updateCashBalance(amountValue, isCredit)
+        // Show success message
+        Toast.makeText(requireContext(), "Transaction saved successfully", Toast.LENGTH_SHORT).show()
 
-        // Navigate back to the CashTransactionFragment
-        findNavController().navigateUp()
+        // Navigate back to the Cash Transaction Fragment with clear back stack
+        val navOptions = NavOptions.Builder()
+            .setLaunchSingleTop(true)
+            .setPopUpTo(R.id.cashTransactionFragment, false)
+            .build()
+        findNavController().navigate(R.id.cashTransactionFragment, null, navOptions)
     }
 
 

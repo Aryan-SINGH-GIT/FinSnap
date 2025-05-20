@@ -10,9 +10,11 @@ import com.example.finsnap.model.UserData
 
 
 
-@Database(entities = [UserData::class, UserBank::class, UserCash::class, UserAmount::class], version = 11)
+@Database(entities = [UserData::class, UserBank::class, UserCash::class, UserAmount::class], version = 26)
+
 abstract class UserDatabase : RoomDatabase() {
     abstract fun UsersDao(): UsersDao
+
 }
 
 

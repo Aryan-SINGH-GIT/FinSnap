@@ -6,21 +6,29 @@
 
         <item android:title="Account"
             android:icon="@drawable/ic_home"
-            android:id="@+id/nav_acount"/>
+            android:id="@+id/nav_acount"
+            android:iconTint="@color/black"
+            android:iconTintMode="src_over"/>
         <item android:title="info"
             android:icon="@drawable/ic_info"
-            android:id="@+id/nav_info"/>
+            android:id="@+id/nav_info"
+            android:iconTint="@color/black"
+            android:iconTintMode="src_over"
+            />
 
 
 
     </group>
-    <item
-        android:title="">
+    <item android:title="">
         <menu>
-            <item android:title="logout"
+            <item
+                android:id="@+id/nav_logout"
                 android:icon="@drawable/logout"
-                android:id="@+id/nav_logout"/>
+                android:title="Logout"
+                android:iconTint="@color/black"
+                android:iconTintMode="src_over"/>
         </menu>
     </item>
+
 
 </menu>

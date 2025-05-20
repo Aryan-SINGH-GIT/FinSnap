@@ -4,11 +4,17 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     tools:context=".view.ArticleFragment"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_background">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Article"
+        android:text="Articles"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textSize="24sp"
+        android:layout_marginTop="20dp"
         android:layout_gravity="center"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/articleRecyclerView"

@@ -86,6 +86,8 @@ interface UsersDao {
     // In UsersDao.kt, change:
 //    @Query("SELECT ID FROM users WHERE email = :email LIMIT 1")
 //    suspend fun getUserByEmail(email: String): UserData? // Return the full user object or null
+    @Query("SELECT * FROM user_amounts WHERE id = :id LIMIT 1")
+    suspend fun getUserAmountById(id: Int): UserAmount?
 
 
 }

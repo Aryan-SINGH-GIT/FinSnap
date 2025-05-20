@@ -1,11 +1,17 @@
 package com.example.finsnap.view
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.finsnap.R
+import com.example.finsnap.databinding.FragmentAcountBinding
+import com.example.finsnap.viewmodel.FinanceViewModel
+import com.example.finsnap.viewmodel.SessionManager
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +27,9 @@ class AcountFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private var _binding: FragmentAcountBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var viewModel: FinanceViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +43,53 @@ class AcountFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_acount, container, false)
+        _binding = FragmentAcountBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(requireActivity())[FinanceViewModel::class.java]
+
+        // Set up UI with user information
+        setupUserInfo()
+        
+        // Set up bank details
+        setupBankDetails()
+
+        // Set up click listeners
+        setupClickListeners()
+    }
+
+    private fun setupUserInfo() {
+        val email = SessionManager.getUserEmail()
+        binding.emailText.text = "Email: $email"
+    }
+
+    private fun setupBankDetails() {
+        viewModel.loadUserBankDetails()
+        viewModel.currentBalance.observe(viewLifecycleOwner) { balance ->
+            binding.currentBalanceText.text = "Current Balance: ₹$balance"
+        }
+        viewModel.cashBalance.observe(viewLifecycleOwner) { cashBalance ->
+            binding.cashBalanceText.text = "Cash Balance: ₹$cashBalance"
+        }
+        viewModel.savingsTarget.observe(viewLifecycleOwner) { target ->
+            binding.savingsTargetText.text = "Monthly Savings Target: ₹$target"
+        }
+    }
+
+    private fun setupClickListeners() {
+
+
+        binding.logoutButton.setOnClickListener {
+            SessionManager.logout(requireContext())
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

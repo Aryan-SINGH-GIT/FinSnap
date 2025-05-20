@@ -10,112 +10,209 @@ import androidx.room.Room
 import com.example.finsnap.R
 import com.example.finsnap.viewmodel.SessionManager
 import com.example.finsnap.viewmodel.UserDatabase
+import com.example.finsnap.viewmodel.DatabaseManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
+import android.net.Uri
 
 class Amout_Repository(private val context: Context) {
 
-    private val database = Room.databaseBuilder(
-        context.applicationContext,
-        UserDatabase::class.java,
-        "UserDatabase"
-    ).fallbackToDestructiveMigration().build()
-
+    private val database = DatabaseManager.getDatabase(context.applicationContext)
     private val usersDao = database.UsersDao()
 
     // Add to Amout_Repository.kt
     suspend fun getUserExists(email: String): Boolean {
         return usersDao.getUserByEmail(email) != null
     }
-
+//
     // ✅ Get all transactions from Room (LiveData)
     fun getAllUserAmountsLive(): LiveData<List<UserAmount>> {
         return usersDao.getAllUserAmounts()
     }
-
+//
     // ✅ Update a transaction in Room
     suspend fun updateUserAmount(userAmount: UserAmount) {
         usersDao.updateUserAmount(userAmount)
     }
 
-    // ✅ Use this when you want a list without observing
+     //✅ Use this when you want a list without observing
     suspend fun getBankSmsTransactions(): List<UserAmount> {
         val dbData = usersDao.getAllUserAmountsNow()
-        if (dbData.isNotEmpty()) {
-            return dbData
-        }
-
-        // Parse from SMS only if DB is empty
-        val parsed = parseSmsTransactions()
-        parsed.forEach {
-            usersDao.insertUserAmount(it)
-        }
-        return parsed
+        
+        // Track this fetch operation
+        val currentTime = System.currentTimeMillis()
+        
+        // Get SMS based on fetch history
+        val parsed = parseSmsTransactions(dbData)
+        
+        // Create a more unique key using message hash + amount + timestamp
+        val existingKeys = dbData.map { generateUniqueKey(it) }.toSet()
+        
+        // Filter out transactions that already exist in the database
+        val newOnes = parsed.filter { generateUniqueKey(it) !in existingKeys }
+        
+        // Insert new transactions
+        newOnes.forEach { usersDao.insertUserAmount(it) }
+        
+        // Save the current time as last fetch time
+        com.example.finsnap.viewmodel.SessionManager.saveLastSmsFetchTime(currentTime)
+        
+        return usersDao.getAllUserAmountsNow()
     }
 
-    private suspend fun parseSmsTransactions(): List<UserAmount> = withContext(Dispatchers.IO) {
+    // Force refresh: re-parse all SMS and update DB (optionally clear DB first)
+    suspend fun refreshAllSmsTransactions(): List<UserAmount> = withContext(Dispatchers.IO) {
+        // Optionally: usersDao.clearAllUserAmounts() // if you want to clear old
+        val dbData = usersDao.getAllUserAmountsNow()
+        val parsed = parseSmsTransactions(dbData)
+        
+        // Create a more unique key using message hash + amount + timestamp
+        val existingKeys = dbData.map { generateUniqueKey(it) }.toSet()
+        
+        // Filter out transactions that already exist in the database
+        val newOnes = parsed.filter { generateUniqueKey(it) !in existingKeys }
+        
+        // Insert new transactions
+        newOnes.forEach { usersDao.insertUserAmount(it) }
+        
+        // Save the current time as last fetch time
+        com.example.finsnap.viewmodel.SessionManager.saveLastSmsFetchTime(System.currentTimeMillis())
+        
+        return@withContext usersDao.getAllUserAmountsNow()
+    }
+    
+    // Generate a unique key for transactions
+    private fun generateUniqueKey(transaction: UserAmount): String {
+        // Create a more robust unique identifier by combining:
+        // 1. A hash of the message content (to detect same message)
+        // 2. The transaction amount (to distinguish different amounts)
+        // 3. The sender name (additional differentiator)
+        return "${transaction.rawMessage.hashCode()}_${transaction.amount}_${transaction.sender}"
+    }
+
+    // Fetch SMS based on timestamp range
+    suspend fun parseSmsTransactions(existingTransactions: List<UserAmount> = emptyList()): List<UserAmount> = withContext(Dispatchers.IO){
         val smsList = mutableListOf<UserAmount>()
-
+        val seenTransactions = mutableSetOf<String>() // To track unique transactions
+        val seenTimestamps = mutableMapOf<String, Int>() // To track and make timestamps unique
+        
+        // Create a set of existing transaction keys for faster lookup
+        val existingKeys = existingTransactions.map { generateUniqueKey(it) }.toSet()
+        
+        // Extract base timestamps from existing transactions to avoid duplication
+        existingTransactions.forEach { transaction ->
+            val baseTime = if (transaction.time.contains("-")) {
+                transaction.time.substringBefore("-")
+            } else if (transaction.time.contains("(")) {
+                transaction.time.substringBefore(" (")
+            } else {
+                transaction.time
+            }
+            // Mark this timestamp as seen
+            val baseTimestampKey = baseTime.substringBeforeLast(" ")  // Remove AM/PM part
+            if (baseTimestampKey !in seenTimestamps) {
+                seenTimestamps[baseTimestampKey] = 0
+            } else {
+                seenTimestamps[baseTimestampKey] = seenTimestamps[baseTimestampKey]!! + 1
+            }
+        }
+        
         val calendar = Calendar.getInstance()
-        calendar.add(Calendar.HOUR, -24)
-        val timestamp = calendar.timeInMillis
-
-        val projection = arrayOf(
-            Telephony.Sms.ADDRESS,
-            Telephony.Sms.BODY,
-            Telephony.Sms.DATE
-        )
-
-        val selection = "${Telephony.Sms.DATE} >= ?"
-        val selectionArgs = arrayOf(timestamp.toString())
-
+        
+        // Determine fetch range based on first-time status
+        val lastFetchTime = com.example.finsnap.viewmodel.SessionManager.getLastSmsFetchTime()
+        val isFirstFetch = !com.example.finsnap.viewmodel.SessionManager.hasCompletedFirstFetch()
+        
+        // Set appropriate fetch window
+        if (isFirstFetch) {
+            // First fetch: Get SMS from the last 3 months
+            calendar.add(Calendar.MONTH, -3)
+            android.util.Log.d("Amout_Repository", "First SMS fetch: Getting last 3 months of SMS")
+        } else {
+            // Subsequent fetches: Get SMS since last fetch
+            calendar.timeInMillis = lastFetchTime
+            android.util.Log.d("Amout_Repository", "Subsequent fetch: Getting SMS since last fetch")
+        }
+        
+        val startTime = calendar.timeInMillis
+        val endTime = System.currentTimeMillis()
+        
         try {
-            context.contentResolver.query(
-                Telephony.Sms.Inbox.CONTENT_URI,
-                projection,
-                selection,
-                selectionArgs,
-                "${Telephony.Sms.DATE} DESC"
-            )?.use { cursor ->
-                val bodyIndex = cursor.getColumnIndex(Telephony.Sms.BODY)
-                val dateIndex = cursor.getColumnIndex(Telephony.Sms.DATE)
-
-                while (cursor.moveToNext()) {
-                    val messageBody = cursor.getStringOrNull(bodyIndex) ?: continue
-                    val messageTimestamp = cursor.getLong(dateIndex)
-
+            // Get SMS messages
+            val cursor = context.contentResolver.query(
+                Uri.parse("content://sms/inbox"),
+                arrayOf("body", "date"),
+                "date >= ? AND date <= ?",
+                arrayOf(startTime.toString(), endTime.toString()),
+                "date DESC"
+            )
+            
+            cursor?.use {
+                while (it.moveToNext()) {
+                    val messageBody = it.getString(it.getColumnIndexOrThrow("body"))
+                    val messageDate = it.getLong(it.getColumnIndexOrThrow("date"))
+                    
                     if (containsBankName(messageBody)) {
-                        val date = Date(messageTimestamp)
-                        val formattedTime = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault()).format(date)
-
-                        val (amount, isCredit, sender) = extractTransactionInfo(messageBody)
-
-                        val imageResource = R.drawable.logo
+                        val date = Date(messageDate)
+                        val baseTime = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault()).format(date)
+                        val baseTimestampKey = baseTime.substringBeforeLast(" ")
+                        
+                        // Get counter for this timestamp
+                        var counter = seenTimestamps[baseTimestampKey] ?: 0
+                        seenTimestamps[baseTimestampKey] = counter + 1
+                        
+                        // Create truly unique timestamp
+                        val uniqueFormattedTime = if (counter > 0) {
+                            "$baseTime ($counter)"
+                        } else {
+                            baseTime
+                        }
+                        
+                        val (amount, isCredit, parsedSender) = extractTransactionInfo(messageBody)
+                        val imageResource = R.drawable.ic_miscellaneous
                         val amountFormatted = if (isCredit) "+₹$amount" else "-₹$amount"
-                        val displaySender = if (sender.isNotEmpty()) sender else if (isCredit) "Unknown Sender" else "Unknown Recipient"
+                        val displaySender = if (parsedSender.isNotEmpty()) parsedSender else if (isCredit) "Unknown Sender" else "Unknown Recipient"
                         val numericAmount = amount.replace(",", "").toDoubleOrNull() ?: 0.0
-
-                        smsList.add(
-                            UserAmount(
-                                sender = displaySender,
-                                time = formattedTime,
-                                amtChange = amountFormatted,
-                                amtImage = imageResource,
-                                rawMessage = messageBody,
-                                amount = numericAmount,
-                                isCredit = isCredit
+                        
+                        // Create a unique key for this transaction
+                        val transactionKey = generateUniqueKey(UserAmount(
+                            sender = displaySender,
+                            time = uniqueFormattedTime,
+                            amtChange = amountFormatted,
+                            amtImage = imageResource,
+                            rawMessage = messageBody,
+                            amount = numericAmount,
+                            isCredit = isCredit
+                        ))
+                        
+                        // Only add if we haven't seen this transaction before and it's not in existing transactions
+                        if (transactionKey !in seenTransactions && transactionKey !in existingKeys) {
+                            seenTransactions.add(transactionKey)
+                            
+                            smsList.add(
+                                UserAmount(
+                                    sender = displaySender,
+                                    time = uniqueFormattedTime,
+                                    amtChange = amountFormatted,
+                                    amtImage = imageResource,
+                                    rawMessage = messageBody,
+                                    amount = numericAmount,
+                                    isCredit = isCredit
+                                )
                             )
-                        )
+                        }
                     }
                 }
             }
+            
+            android.util.Log.d("Amout_Repository", "Found ${smsList.size} new bank transactions")
         } catch (e: Exception) {
+            android.util.Log.e("Amout_Repository", "Error parsing SMS: ${e.message}")
             e.printStackTrace()
         }
-
         return@withContext smsList
     }
 
@@ -185,12 +282,12 @@ class Amout_Repository(private val context: Context) {
     private fun containsBankName(message: String): Boolean {
         val messageLower = message.lowercase()
         val bankKeywords = mapOf(
-            "sbi" to listOf("sbi", "sbipsg", "sbitxn", "sbinbh"),
+            "sbi" to listOf("sbi", "sbipsg", "sbitxn", "sbinbh","State Bank of India"),
             "hdfc" to listOf("hdfc", "hdfcbk", "hdfcbn", "hdfctr"),
             "icici" to listOf("icici", "icicib", "icicin", "icictn"),
             "axis" to listOf("axis", "axisbk", "axistn"),
             "pnb" to listOf("pnb", "pnbmsg", "pnbtxn"),
-            "bob" to listOf("bob", "bobtxn", "baroda", "bankbd"),
+            "bob" to listOf("bob" ,"bobtxn", "baroda", "bankbd","Bank of Baroda"),
             "kotak" to listOf("kotak", "ktkbnk", "kotknb"),
             "indusind" to listOf("indusind", "indbnk", "indsbn"),
             "yes" to listOf("yesbank", "yesbnk", "yestxn"),
@@ -208,4 +305,6 @@ class Amout_Repository(private val context: Context) {
     suspend fun getCashTransactions(): List<UserCash> {
         return usersDao.getAllCashTransactions()
     }
+
+
 }

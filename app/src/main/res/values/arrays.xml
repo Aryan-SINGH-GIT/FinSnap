@@ -13,5 +13,13 @@
             <item>Yes Bank</item>
             <item>Union Bank of India</item>
         </string-array>
-    </resources>
+
+
+    <string-array name="transaction_filters">
+        <item>All</item>
+        <item>Daily</item>
+        <item>Monthly</item>
+    </string-array>
+
+</resources>
 

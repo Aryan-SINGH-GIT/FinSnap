@@ -1,17 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.InfoFragment"
-    android:gravity="center">
+    android:background="@drawable/bg_background">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="INFO"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/appName"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FinSnap"
+            android:textColor="#37664F"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:paddingBottom="8dp" />
+
+        <TextView
+            android:textColor="@color/black"
+            android:padding="12dp"
+            android:id="@+id/appDescription"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FinSanp is your smart, simple finance tracking companion. Designed for young adults and students, it helps you stay on top of your expenses by automatically reading bank SMS messages, categorizing transactions, and providing insights through charts and trends."
+            android:textSize="16sp"
+            android:paddingBottom="16dp" />
+
+        <TextView
+            android:id="@+id/featuresTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Key Features"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingBottom="4dp" />
+
+        <TextView
+            android:textColor="@color/black"
+            android:id="@+id/featuresList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- Auto-detect expenses from SMS\n- Manual expense entry\n- Real-time budget tracking\n- Spending category analytics\n- Offline-first with local storage\n- Privacy-focused, no data upload"
+            android:textSize="16sp"
+            android:paddingBottom="16dp" />
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_top_corners"
+            android:padding="12dp">
+
+            <TextView
+                android:textColor="@color/black"
+                android:id="@+id/version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Version: 1.0.0"
+                android:textSize="14sp"
+                android:paddingBottom="4dp" />
+
+            <TextView
+                android:id="@+id/developer"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Developer: Aryan Singh"
+                android:textSize="14sp"
+                android:paddingBottom="4dp" />
+
+            <TextView
+                android:id="@+id/contact"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contact: aryan1210singh3000@gmail.com"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_marginTop="6dp"
+                android:id="@+id/githubLink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GitHub: https://github.com/Aryan-SINGH-GIT/FinSnap"
+                android:textSize="14sp"
+              android:textColorLink="#2B3DC1"
+                android:autoLink="web"
+                android:textColor="@color/black" />
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+</ScrollView>
