@@ -28,12 +28,12 @@ class Amout_Repository(private val context: Context) {
         return usersDao.getUserByEmail(email) != null
     }
 //
-    // ✅ Get all transactions from Room (LiveData)
+    // Get all transactions from Room (LiveData)
     fun getAllUserAmountsLive(): LiveData<List<UserAmount>> {
         return usersDao.getAllUserAmounts()
     }
 //
-    // ✅ Update a transaction in Room
+    //  Update a transaction in Room
     suspend fun updateUserAmount(userAmount: UserAmount) {
         usersDao.updateUserAmount(userAmount)
     }
